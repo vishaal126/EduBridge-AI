@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EduBridge AI — Sign in</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@600;800&family=Noto+Sans+Telugu:wght@500&family=Noto+Sans+Devanagari:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- SVG icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3 8 9 6 9-6"/></symbol>
+  <symbol id="lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+  <symbol id="eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="eyeoff" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A9.6 9.6 0 0 1 12 5c6 0 10 7 10 7a17 17 0 0 1-3.2 3.9M6.6 6.6A17 17 0 0 0 2 12s4 7 10 7a9.7 9.7 0 0 0 4.4-1M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+  <symbol id="ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></symbol>
+  <symbol id="bad" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5v.01"/></symbol>
+  <symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="match" viewBox="0 0 24 24"><circle cx="9" cy="9" r="5"/><path d="m21 21-7-7M7 9h4"/></symbol>
+  <symbol id="swap" viewBox="0 0 24 24"><path d="M4 8h14l-3-3M20 16H6l3 3"/></symbol>
+  <symbol id="notes" viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h5"/></symbol>
+</svg>
+
+<!-- Animated background -->
+<div class="bg" aria-hidden="true">
+  <div class="grid"></div><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <canvas id="fx"></canvas><div class="spot"></div>
+</div>
+
+<div id="toasts" role="status" aria-live="polite"></div>
+
+<main class="shell">
+  <!-- LEFT: branding -->
+  <section class="brand" aria-label="About the platform">
+    <div class="logo">
+      <span class="logo-mark"><svg viewBox="0 0 24 24"><path d="M3 17c4-9 14-9 18 0M3 17h18M8 17v-4M16 17v-4M12 17V9"/></svg></span>
+      <span>EduBridge AI<small>LEARN · MATCH · GROW</small></span>
+    </div>
+    <h1>Every doubt finds its tutor.</h1>
+    <p class="sub">Describe your real problem, get matched to the right tutor, trade skills with peers, and walk away with smart notes after every session.</p>
+    <div class="hero-row">
+      <div class="sphere" aria-hidden="true"><div class="ring r1"></div><div class="ring r2"></div><div class="core"></div></div>
+      <div class="demo" aria-hidden="true">
+        <div class="b me d1">Quadratic equations నాకు అర్థం కావడం లేదు</div>
+        <div class="b ai d2"><span class="pd"></span>Finding a Telugu-speaking maths tutor…</div>
+        <div class="match d3"><span class="av">AR</span><div><b>Ananya R. is free now</b><small>Algebra, Telugu + English, 4.9 rating</small></div></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><b data-count="10">0</b><span>subjects covered</span></div>
+        <div class="stat"><b data-count="8">0</b><span>languages</span></div>
+        <div class="stat"><b data-count="24" data-suffix="/7">0</b><span>AI doubt help</span></div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip"><svg class="i"><use href="#match"/></svg>Tutor matching</div>
+      <div class="chip"><svg class="i"><use href="#swap"/></svg>Skill swap</div>
+      <div class="chip"><svg class="i"><use href="#notes"/></svg>Smart notes</div>
+    </div>
+  </section>
+
+  <!-- RIGHT: login / register card -->
+  <section class="panel">
+    <div class="card" id="card">
+      <div class="glow" aria-hidden="true"></div>
+
+      <!-- LOGIN VIEW -->
+      <div class="view" id="loginView">
+        <h2>Welcome Back</h2>
+        <p class="lead">Sign in to continue your journey.</p>
+        <div class="seg" data-v="Student"><span class="pill"></span><button type="button" class="on" data-role="Student">I'm a student</button><button type="button" data-role="Tutor">I'm a tutor</button></div>
+        <form id="loginForm" novalidate>
+          <div class="field" data-rule="identity">
+            <label for="lid">Email or mobile number</label>
+            <div class="input"><svg class="i"><use href="#user"/></svg>
+              <input id="lid" name="id" autocomplete="username" placeholder="you@example.com or +91 98765 43210">
+              <svg class="i tick"><use href="#ok"/></svg></div>
+            <div class="msg"></div>
+          </div>
+          <div class="field" data-rule="loginpw">
+            <label for="lpw">Password</label>
+            <div class="input"><svg class="i"><use href="#lock"/></svg>
+              <input id="lpw" type="password" autocomplete="current-password" placeholder="Your password">
+              <button type="button" class="eye" aria-label="Show password"><svg class="i"><use href="#eye"/></svg></button></div>
+            <div class="msg"></div>
+          </div>
+          <div class="row">
+            <label class="check"><input type="checkbox" id="remember"><span class="box"><svg viewBox="0 0 16 16"><path d="m3 8.5 3.2 3L13 4.5"/></svg></span>Remember me</label>
+            <button type="button" class="link" data-open="forgot">Forgot password?</button>
+          </div>
+          <button class="btn" type="submit"><span class="lbl">Sign In</span><span class="spin"></span></button>
+        </form>
+        <p class="foot">New here? <button type="button" class="link" data-view="register">Create account</button></p>
+      </div>
+
+      <!-- REGISTER VIEW -->
+      <div class="view" id="registerView" hidden>
+        <h2>Create account</h2>
+        <p class="lead">Join in under a minute.</p>
+        <div class="seg" data-v="Student"><span class="pill"></span><button type="button" class="on" data-role="Student">I'm a student</button><button type="button" data-role="Tutor">I'm a tutor</button></div>
+        <form id="regForm" novalidate>
+          <div class="field" data-rule="name">
+            <label for="rn">Full name</label>
+            <div class="input"><svg class="i"><use href="#user"/></svg><input id="rn" autocomplete="name" placeholder="Your name"><svg class="i tick"><use href="#ok"/></svg></div><div class="msg"></div>
+          </div>
+          <div class="field" data-rule="email">
+            <label for="re">Email</label>
+            <div class="input"><svg class="i"><use href="#mail"/></svg><input id="re" type="email" autocomplete="email" placeholder="you@example.com"><svg class="i tick"><use href="#ok"/></svg></div><div class="msg"></div>
+          </div>
+          <div class="field" data-rule="newpw">
+            <label for="rp">Password</label>
+            <div class="input"><svg class="i"><use href="#lock"/></svg><input id="rp" type="password" autocomplete="new-password" placeholder="8+ characters"><button type="button" class="eye" aria-label="Show password"><svg class="i"><use href="#eye"/></svg></button></div><div class="msg"></div>
+            <div class="meter" data-s="0" aria-hidden="true"><i></i><i></i><i></i><i></i><em></em></div>
+          </div>
+          <div class="field" data-rule="confirm">
+            <label for="rc">Confirm password</label>
+            <div class="input"><svg class="i"><use href="#lock"/></svg><input id="rc" type="password" autocomplete="new-password" placeholder="Repeat password"><svg class="i tick"><use href="#ok"/></svg></div><div class="msg"></div>
+          </div>
+          <details class="opt">
+            <summary>Profile details (optional)</summary>
+            <div class="field"><label for="rsk">Skills you can teach</label><div class="input"><svg class="i"><use href="#notes"/></svg><input id="rsk" maxlength="300" placeholder="Python, Excel, UI Design"></div></div>
+            <div class="field"><label for="rwn">Skills you want to learn</label><div class="input"><svg class="i"><use href="#notes"/></svg><input id="rwn" maxlength="300" placeholder="SQL, Statistics"></div></div>
+            <div class="cols3">
+              <div class="field"><label for="rci">City</label><div class="input"><input id="rci" maxlength="80" autocomplete="address-level2"></div></div>
+              <div class="field"><label for="rst">State</label><div class="input"><input id="rst" maxlength="80" autocomplete="address-level1"></div></div>
+              <div class="field"><label for="rco">Country</label><div class="input"><input id="rco" maxlength="80" value="India" autocomplete="country-name"></div></div>
+            </div>
+          </details>
+          <div class="field" data-rule="terms">
+            <label class="check"><input type="checkbox" id="rt"><span class="box"><svg viewBox="0 0 16 16"><path d="m3 8.5 3.2 3L13 4.5"/></svg></span>I agree to the terms of use</label><div class="msg"></div>
+          </div>
+          <button class="btn" type="submit"><span class="lbl">Create account</span><span class="spin"></span></button>
+        </form>
+        <p class="foot">Already have an account? <button type="button" class="link" data-view="login">Sign in</button></p>
+      </div>
+
+      <!-- SUCCESS OVERLAY -->
+      <div class="done" id="done" role="alertdialog" aria-labelledby="doneT">
+        <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="48"/><path d="m38 62 16 16 30-34"/></svg>
+        <h2 id="doneT">Welcome</h2>
+        <p class="lead" style="margin:0" id="doneMsg">Opening your workspace…</p>
+        <button class="btn" id="goNow" type="button"><span class="lbl">Continue</span></button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FORGOT PASSWORD MODAL (asks the server to email a single-use link) -->
+<div class="modal" id="forgot" role="dialog" aria-modal="true" aria-labelledby="fT">
+  <div class="sheet">
+    <button type="button" class="x" data-close aria-label="Close"><svg class="i"><use href="#close"/></svg></button>
+    <h2 id="fT" style="font-size:1.6rem">Reset password</h2>
+    <p class="lead">Enter your email and we'll send a reset link.</p>
+    <form id="forgotForm" novalidate>
+      <div class="field" data-rule="email">
+        <label for="fe">Email</label>
+        <div class="input"><svg class="i"><use href="#mail"/></svg><input id="fe" type="email" autocomplete="email" placeholder="you@example.com"><svg class="i tick"><use href="#ok"/></svg></div><div class="msg"></div>
+      </div>
+      <button class="btn" type="submit"><span class="lbl">Send reset link</span><span class="spin"></span></button>
+    </form>
+  </div>
+</div>
+
+<!-- CHOOSE NEW PASSWORD (opened when the visitor arrives from the emailed link; the token stays on the server) -->
+<div class="modal" id="reset" role="dialog" aria-modal="true" aria-labelledby="rT">
+  <div class="sheet">
+    <button type="button" class="x" data-close aria-label="Close"><svg class="i"><use href="#close"/></svg></button>
+    <h2 id="rT" style="font-size:1.6rem">Choose a new password</h2>
+    <p class="lead">Your reset link is valid. Pick a strong password.</p>
+    <form id="resetForm" novalidate>
+      <div class="field" data-rule="newpw">
+        <label for="np">New password</label>
+        <div class="input"><svg class="i"><use href="#lock"/></svg><input id="np" type="password" autocomplete="new-password" placeholder="8+ characters"><button type="button" class="eye" aria-label="Show password"><svg class="i"><use href="#eye"/></svg></button></div><div class="msg"></div>
+        <div class="meter" data-s="0" aria-hidden="true"><i></i><i></i><i></i><i></i><em></em></div>
+      </div>
+      <div class="field" data-rule="confirm">
+        <label for="nc">Confirm password</label>
+        <div class="input"><svg class="i"><use href="#lock"/></svg><input id="nc" type="password" autocomplete="new-password" placeholder="Repeat password"><svg class="i tick"><use href="#ok"/></svg></div><div class="msg"></div>
+      </div>
+      <button class="btn" type="submit"><span class="lbl">Update password</span><span class="spin"></span></button>
+    </form>
+  </div>
+</div>
+
+<!-- LINK ACCOUNT (provider email matches an existing password account: prove ownership with its password) -->
+<div class="modal" id="link" role="dialog" aria-modal="true" aria-labelledby="lT">
+  <div class="sheet">
+    <button type="button" class="x" data-close aria-label="Close"><svg class="i"><use href="#close"/></svg></button>
+    <h2 id="lT" style="font-size:1.5rem">Link your account</h2>
+    <p class="lead" id="linkMsg">An EduBridge account already exists for this email. Enter its password to link it.</p>
+    <form id="linkForm" novalidate>
+      <div class="field" data-rule="loginpw">
+        <label for="lkp">EduBridge password</label>
+        <div class="input"><svg class="i"><use href="#lock"/></svg><input id="lkp" type="password" autocomplete="current-password" placeholder="Your existing password"><button type="button" class="eye" aria-label="Show password"><svg class="i"><use href="#eye"/></svg></button></div><div class="msg"></div>
+      </div>
+      <button class="btn" type="submit"><span class="lbl">Link and sign in</span><span class="spin"></span></button>
+    </form>
+  </div>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>

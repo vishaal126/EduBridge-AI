@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+edubridge.db
+*.pyc
+
+.env
+.streamlit/secrets.toml
